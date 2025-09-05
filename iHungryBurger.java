@@ -6,6 +6,7 @@ class iHungryBurger{
     public static String[] cusName=new String[0];
     public static int[] quantity=new int[0];
     public static int[] status=new int[0];
+    public static int[] orderQty= new int[0];
     
     public static int[] orIdOfCus=new int[0];
     //CONSTANT
@@ -37,12 +38,17 @@ class iHungryBurger{
 			 case 2:
 			 //searchBestCustomer();break;
 			 case 3:
-			 //searchOrder();break;
+			 clearConsole();
+			 searchOrder();break;
 			 case 4:
 			 //searchCustomer();break;
 			 case 5:
-			 //viewOrders();break;
+			 clearConsole();
+			 viewOrders();break;
 			 case 6:
+			 clearConsole();
+			 updateOrderDetails();break;
+			 case 7:
 			 //exit();break;
 			 default:	 
 	       }
@@ -50,7 +56,6 @@ class iHungryBurger{
 		
 	//////////////Place Order////////////////
 	public static void placeOrder(){
-	
      Scanner input = new Scanner(System.in); 
      PO:while(true){
 	 System.out.println(Arrays.toString(cusName));
@@ -90,6 +95,7 @@ class iHungryBurger{
 					  case 1:   //Confirm order
 					  addOrderId(orId);
 					  addOrIdAndCusIdRelation(phoneNo);
+					  addOrderQty(qty);
 					  System.out.println();
 					  quantity[index]=quantity[index]+qty;
 					  addNewStatus();
@@ -140,6 +146,7 @@ class iHungryBurger{
 					  case 1:
 					  addOrderId(orId);
 					  addOrIdAndCusIdRelation(phoneNo);
+					  addOrderQty(qty); 
 					  addNewCustomerId(phoneNo);  //Add new customer
 					  addNewQuantity(qty);
 					  addNewCustomerName(name);
@@ -188,8 +195,425 @@ class iHungryBurger{
 			 }
  	     }
 	 }
- }   
-        
+ } 
+ 
+      public static void searchOrder(){
+	   Scanner input = new Scanner(System.in); 
+	   SO:while(true){
+	   System.out.println("------------------------------------------------------");
+ 	   System.out.println("|                    SEARCH ORDER                    |");
+ 	   System.out.println("------------------------------------------------------");
+ 	   System.out.println();
+	   System.out.print("Enter order id :");
+	   String orderid = input.next();
+	  if(isValidateOrId(orderid)){
+		   int orIndex = findIndexOfOrId(orderid);
+		   int customerId = findOrIdOfCus(orIndex);
+	   
+		   for (int i = 0; i < cusId.length; i++){
+				if(cusId[i]==customerId){
+				  System.out.println("--------------------------------------------------------------------------------");
+                  System.out.printf("%s %-10s %-12s %-15s %-10s %-12s %-12s %s%n",
+                  "|","OrderID", "CustomerId", "Name", "Quantity", "OrderValue", "OrderStatus","|");
+                  System.out.println("--------------------------------------------------------------------------------");
+
+                  System.out.printf("%s %-10s %-12s %-15s %-10s %-12s %-12s %s%n",
+                  "|",
+                  orderid,
+                  "0" + cusId[i],
+                  cusName[i],
+                  orderQty[orIndex],
+                  UNIT_PRICE,
+                  status[orIndex] == 0 ? "Preparing" : status[orIndex] == 1 ? "Delivered" : "Canceled",
+                  "|"
+                  );
+                  System.out.println("--------------------------------------------------------------------------------");
+
+			    }
+			}
+			L2:while(true){
+						   int serviceDeci = anotherService1();
+					       switch(serviceDeci){
+					       case 1:
+					       clearConsole();
+					       continue SO;
+					       case 2:    
+					       clearConsole();
+					       mainMenu();
+					       return;
+					       case 3:
+					       System.out.println("Invalid input enter valid input");
+					       continue L2;
+					       }
+					   }
+		   }else{
+			   System.out.println("Invlaid Order Order");
+			   continue SO;
+		   } 
+		   } 
+	  }
+	  
+	   public static void updateOrderDetails(){
+	       Scanner input = new Scanner(System.in);
+	       UO:while(true){
+	       System.out.println("------------------------------------------------------");
+ 	       System.out.println("|              UPDATE ORDER DETAILS                   |");
+ 	       System.out.println("------------------------------------------------------");
+ 	       System.out.println();
+ 	       System.out.print("Enter order id :");
+	       String orderid = input.next();
+	       System.out.println();
+		     if(isValidateOrId(orderid)){
+				 int orIndex = findIndexOfOrId(orderid);
+		         int customerId = findOrIdOfCus(orIndex);
+		         if(status[orIndex]==0){
+					 for (int i = 0; i < cusId.length; i++){
+						 if(cusId[i]==customerId){
+							   System.out.println("OrderId    -"+orderid);
+					           System.out.println("CustomerId -"+"0"+cusId[i]);
+					           System.out.println("Name       -"+cusName[i]);
+					           System.out.println("Quantity   -"+orderQty[orIndex]);
+					           System.out.println("OrderValue -"+orderQty[orIndex]*UNIT_PRICE);
+					           System.out.println(status[orIndex]==0?"OrderStatus - Preparing"
+					           :status[orIndex]==1?"OrderStatus - Delivered":"OrderStatus - Canceled");
+					           System.out.println();
+					           System.out.println("What do you want to update?\n");
+					           System.out.println("\t(01) Quantity");
+					           System.out.println("\t(02) Status");
+					           System.out.println();
+					           L2:while(true){
+					           System.out.print("Enter your option -");
+					           int op = input.nextInt();
+					           switch(op){
+								   case 1:
+								   clearConsole();
+								   updateQuantity(customerId,orderid,orIndex);
+								   return;
+								   case 2:
+								   clearConsole();
+								   updateStatus(customerId,orderid,orIndex);
+								   return;
+								   default:
+								   System.out.println("Invalid input, try again");
+								   continue L2;
+								   }
+								 }
+							 }
+						 }
+					 }else if(status[orIndex]==1){
+						 System.out.print("This order is already delivered..You can not update this order...");
+						 L2:while(true){
+						   int serviceDeci = anotherService2();
+					       switch(serviceDeci){
+					       case 1:
+					       clearConsole();
+					       updateOrderDetails();
+					       case 2:    
+					       clearConsole();
+					       mainMenu();
+					       return;
+					       case 3:
+					       System.out.println("Invalid input enter valid input");
+					       continue L2;
+					       }
+					      }
+						 }else{
+							 System.out.print("his order is already cancelled..You can not update this order...");
+							  L2:while(true){
+						       int serviceDeci = anotherService2();
+					            switch(serviceDeci){
+					            case 1:
+					            clearConsole();
+					            updateOrderDetails();
+					            case 2:    
+					            clearConsole();
+					            mainMenu();
+					            return;
+					            case 3:
+					            System.out.println("Invalid input enter valid input");
+					            continue L2;
+					       }
+					   }
+					}
+				 }else{
+					  System.out.println("Invlaid Order Id");
+			          L2:while(true){
+						       int serviceDeci = anotherService2();
+					            switch(serviceDeci){
+					            case 1:
+					            clearConsole();
+					            updateOrderDetails();
+					            case 2:    
+					            clearConsole();
+					            mainMenu();
+					            return;
+					            case 3:
+					            System.out.println("Invalid input enter valid input");
+					            continue L2;
+					       }
+					   }
+					 }
+				}
+		   }
+		  
+		  
+		 //////////////View Orders////////////////
+		 public static void viewOrders(){
+			 Scanner input = new Scanner(System.in);
+			 System.out.println("------------------------------------------------------");
+ 	         System.out.println("|                 VIEW ORDER LIST                    |");
+ 	         System.out.println("------------------------------------------------------");
+ 	         System.out.println();
+ 	         System.out.println("\t(01) Delivered Order");
+		     System.out.println("\t(02) Preparing Order");
+		     System.out.println("\t(02) Cancel Order");
+		     System.out.print("Enter your option -");
+			 int op = input.nextInt();
+			  switch(op){
+				  case 1:
+				    clearConsole();
+				    System.out.println("------------------------------------------------------");
+ 	                System.out.println("|                 DELIVERED ORDER                    |");
+ 	                System.out.println("------------------------------------------------------");
+ 	                System.out.println();
+ 	                for (int i = 0; i < orderId.length; i++){
+ 	                if(status[i]==1){			
+ 	                 System.out.println("-------------------------------------------------------------------");
+                     System.out.printf("%s %-10s %-12s %-15s %-10s %-12s %s%n",
+                     "|","OrderID", "CustomerId", "Name", "Quantity", "OrderValue","|");
+                     System.out.println("-------------------------------------------------------------------");
+
+                     System.out.printf("%s %-10s %-12s %-15s %-10s %-12s %s%n",
+                     "|",
+                     orderId[i],
+                     "0" + cusId[i],
+                     cusName[i],
+                     orderQty[i],
+                     orderQty[i]*UNIT_PRICE,
+                     "|"
+                     );
+                     System.out.println("-------------------------------------------------------------------");
+                    }
+                   }
+                   L2:while(true){
+						   int serviceDeci = anotherService3();
+					       switch(serviceDeci){
+					       case 1:
+					       clearConsole();
+					       viewOrders();
+					       return;
+					       case 2:    
+					       clearConsole();
+					       mainMenu();
+					       return;
+					       case 3:
+					       System.out.println("Invalid input enter valid input");
+					       continue L2;
+					       }
+					   }
+				  case 2:
+				    clearConsole();
+				    System.out.println("------------------------------------------------------");
+ 	                System.out.println("|                PREPARING ORDER                    |");
+ 	                System.out.println("------------------------------------------------------");
+ 	                System.out.println();
+ 	                  for (int i = 0; i < orderId.length; i++){
+ 	                if(status[i]==0){			
+ 	                 System.out.println("-------------------------------------------------------------------");
+                     System.out.printf("%s %-10s %-12s %-15s %-10s %-12s %s%n",
+                     "|","OrderID", "CustomerId", "Name", "Quantity", "OrderValue","|");
+                     System.out.println("-------------------------------------------------------------------");
+
+                     System.out.printf("%s %-10s %-12s %-15s %-10s %-12s %s%n",
+                     "|",
+                     orderId[i],
+                     "0" + cusId[i],
+                     cusName[i],
+                     orderQty[i],
+                     orderQty[i]*UNIT_PRICE,
+                     "|"
+                     );
+                     System.out.println("-------------------------------------------------------------------");
+                    }
+                   }
+                   L2:while(true){
+						   int serviceDeci = anotherService3();
+					       switch(serviceDeci){
+					       case 1:
+					       clearConsole();
+					       viewOrders();
+					       return;
+					       case 2:    
+					       clearConsole();
+					       mainMenu();
+					       return;
+					       case 3:
+					       System.out.println("Invalid input enter valid input");
+					       continue L2;
+					       }
+					   }
+				  case 3:
+				   clearConsole();
+				    System.out.println("------------------------------------------------------");
+ 	                System.out.println("|                     CANCEL ORDER                    |");
+ 	                System.out.println("------------------------------------------------------");
+ 	                System.out.println();
+ 	                  for (int i = 0; i < orderId.length; i++){
+ 	                if(status[i]==2){			
+ 	                 System.out.println("-------------------------------------------------------------------");
+                     System.out.printf("%s %-10s %-12s %-15s %-10s %-12s %s%n",
+                     "|","OrderID", "CustomerId", "Name", "Quantity", "OrderValue","|");
+                     System.out.println("-------------------------------------------------------------------");
+
+                     System.out.printf("%s %-10s %-12s %-15s %-10s %-12s %s%n",
+                     "|",
+                     orderId[i],
+                     "0" + cusId[i],
+                     cusName[i],
+                     orderQty[i],
+                     orderQty[i]*UNIT_PRICE,
+                     "|"
+                     );
+                     System.out.println("-------------------------------------------------------------------");
+                    }
+                   }
+                   L2:while(true){
+						   int serviceDeci = anotherService3();
+					       switch(serviceDeci){
+					       case 1:
+					       clearConsole();
+					       viewOrders();
+					       return;
+					       case 2:    
+					       clearConsole();
+					       mainMenu();
+					       return;
+					       case 3:
+					       System.out.println("Invalid input enter valid input");
+					       continue L2;
+					       }
+					   }
+				  default:
+				  }
+			 }
+		   
+	    //////////////Update status////////////////
+        public static void updateStatus(int customerId,String orderId,int orIndex){
+			Scanner input = new Scanner(System.in);
+			System.out.println("Status Update");
+		    System.out.println("===============");
+		    System.out.println();
+			System.out.println("OrderId -"+orderId);
+			for (int i = 0; i < cusId.length; i++){
+				 if(cusId[i]==customerId){
+				   System.out.println("CustomerId -"+"0"+cusId[i]);
+		           System.out.println("Name -"+cusName[i]);
+				}
+		    
+			}
+			System.out.println();
+			System.out.println("\t(0)Cancel");
+			System.out.println("\t(1)Preparing");
+			System.out.println("\t(2)Delivered\n");
+			System.out.print("Enter new order status - ");
+			int value = input.nextInt();
+			if(value==0){
+				status[orIndex]=2;
+				quantity[orIndex]=quantity[orIndex]-orderQty[orIndex];  //remove quantity if order cancelled
+				}else if(value==1){
+					status[orIndex]=0;
+					}else{
+						status[orIndex]=1;
+						}
+			System.out.println();
+			System.out.println("\tUpdate order quantity success fully...\n");
+			System.out.println(status[orIndex]==0?"OrderStatus - Preparing"
+	        :status[orIndex]==1?"OrderStatus - Delivered":"OrderStatus - Canceled");
+			System.out.println();
+			L2:while(true){
+						   int serviceDeci = anotherService2();
+					       switch(serviceDeci){
+					       case 1:
+					       clearConsole();
+					       updateOrderDetails();
+					       case 2:    
+					       clearConsole();
+					       mainMenu();
+					       return;
+					       case 3:
+					       System.out.println("Invalid input enter valid input");
+					       continue L2;
+					       }
+					   }
+		        }
+			
+		    
+		 
+	   //////////////Update quantity////////////////
+        public static void updateQuantity(int customerId,String orderId,int orIndex){
+			Scanner input = new Scanner(System.in);
+			System.out.println("Quantity Update");
+		    System.out.println("===============");
+		    System.out.println();
+			System.out.println("OrderId -"+orderId);
+			for (int i = 0; i < cusId.length; i++){
+				 if(cusId[i]==customerId){
+				   System.out.println("CustomerId -"+"0"+cusId[i]);
+		           System.out.println("Name -"+cusName[i]);
+				}
+		    
+			}
+			System.out.println();
+			System.out.print("Enter your quantity update value - ");
+			int value = input.nextInt();
+			orderQty[orIndex]=value;
+			System.out.println("\tUpdate order quantity success fully...");
+			System.out.println("New order quantity - "+orderQty[orIndex]);
+			System.out.println("New order value - "+orderQty[orIndex]*UNIT_PRICE);
+			System.out.println();
+			L2:while(true){
+						   int serviceDeci = anotherService2();
+					       switch(serviceDeci){
+					       case 1:
+					       clearConsole();
+					       updateOrderDetails();
+					       case 2:    
+					       clearConsole();
+					       mainMenu();
+					       return;
+					       case 3:
+					       System.out.println("Invalid input enter valid input");
+					       continue L2;
+					       }
+					   }
+		}
+	   //////////////Find cusid of order////////////////
+        public static int findOrIdOfCus(int id){
+			for (int i = 0; i < orIdOfCus.length; i++){
+				if(i==id){
+					return orIdOfCus[i];
+					}
+			}
+			return -1;
+			} 
+	  //////////////Find index of order id////////////////
+        public static int findIndexOfOrId(String id){
+			for (int i = 0; i < orderId.length; i++){
+				if(orderId[i].equals(id)){
+					return i;
+					}
+			}
+			return -1;
+			}
+        //////////////validate order id////////////////
+        public static boolean isValidateOrId(String id){
+			for (int i = 0; i < orderId.length; i++){
+				if(orderId[i].equals(id)){
+					return true;
+					}
+			}
+			return false;
+			}
        //////////////Search Index Number////////////////	
        public static int searchIndex(int phoneNo){
 		 for (int i = 0; i <cusId.length; i++){
@@ -221,6 +645,48 @@ class iHungryBurger{
 			default :
 			return 3;
 			}
+		}
+	   //////////////Another Service1////////////////
+      public static int anotherService1(){
+		Scanner input = new Scanner(System.in);
+		System.out.print("Do you want to search another order details (Y/N) - ");
+		String decision = input.next().toUpperCase();
+		switch(decision){
+			case "Y":
+			return 1;
+			case "N":
+			return 2;
+			default :
+			return 3;
+			}
+		}  
+	  //////////////Another Service2////////////////
+      public static int anotherService2(){
+		Scanner input = new Scanner(System.in);
+		System.out.print("Do you want to update another order details (Y/N) - ");
+		String decision = input.next().toUpperCase();
+		switch(decision){
+			case "Y":
+			return 1;
+			case "N":
+			return 2;
+			default :
+			return 3;
+			}
+		} 
+	 //////////////Another Service3////////////////
+      public static int anotherService3(){
+		Scanner input = new Scanner(System.in);
+		System.out.print("Do you want to go to home page (Y/N) - ");
+		String decision = input.next().toUpperCase();
+		switch(decision){
+			case "Y":
+			return 1;
+			case "N":
+			return 2;
+			default :
+			return 3;
+			}
 		} 
      ///////////////Add order id/////////////////
      public static void addOrderId(String id){
@@ -231,6 +697,8 @@ class iHungryBurger{
 		  tempArray[tempArray.length-1]=id;
 		  orderId=tempArray;
 		 }
+		 
+		 
 	  ///////////////Add new customerid/////////////////
      public static void addNewCustomerId(int id){
 		  int[] tempArray = new int[cusId.length+1];
@@ -275,6 +743,15 @@ class iHungryBurger{
 		  }
 		  tempArray[tempArray.length-1]=PREPARING;
 		  status=tempArray;
+		 }
+	   ///////////////Add new orderqty/////////////////
+     public static void addOrderQty(int qty){
+		  int[] tempArray = new int[orderQty.length+1];
+		  for (int i = 0; i < orderQty.length; i++){
+			  tempArray[i]=orderQty[i];
+		  }
+		  tempArray[tempArray.length-1]=qty;
+		  orderQty=tempArray;
 		 }
      //////////////Confirm order/////////////////
      public static int confirmOrder(){
