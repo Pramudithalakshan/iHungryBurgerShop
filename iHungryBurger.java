@@ -5,6 +5,9 @@ class iHungryBurger{
     public static int[] cusId=new int[0];
     public static String[] cusName=new String[0];
     public static int[] quantity=new int[0];
+    public static int[] status=new int[0];
+    
+    public static int[] orIdOfCus=new int[0];
     //CONSTANT
     public final static double UNIT_PRICE=500;
     public final static int PREPARING=0;
@@ -15,7 +18,7 @@ class iHungryBurger{
 		 mainMenu(); 
 	}
 	public static void mainMenu(){
-		 Scanner input = new Scanner(System.in);
+	 Scanner input = new Scanner(System.in);
  	 System.out.println("------------------------------------------------------");
  	 System.out.println("|                 iHungry Burger                     |");
  	 System.out.println("------------------------------------------------------");
@@ -50,6 +53,13 @@ class iHungryBurger{
 	
      Scanner input = new Scanner(System.in); 
      PO:while(true){
+	 System.out.println(Arrays.toString(cusName));
+	 System.out.println(Arrays.toString(cusId));
+	 System.out.println(Arrays.toString(orderId));
+	 System.out.println(Arrays.toString(quantity));
+	 System.out.println(Arrays.toString(orIdOfCus));
+	 	 System.out.println(Arrays.toString(status));
+
      System.out.println("------------------------------------------------------");
  	 System.out.println("|                    PLACE ORDER                     |");
  	 System.out.println("------------------------------------------------------");
@@ -68,8 +78,7 @@ class iHungryBurger{
  	 if(validatePhoneNo(phone)){                   //validate phone number
 		        int phoneNo = Integer.parseInt(phone);
 		     
-		        if(isCustomer(phoneNo)){
-				             //Search, is customer already added
+		        if(isCustomer(phoneNo)){		                         //Search, is customer already added
 				  int index =searchIndex(phoneNo);  //Get a index of customer
 		          System.out.println("Customer Name :"+cusName[index]);
 		          System.out.print("Enter Burger Quantity - :");
@@ -80,8 +89,10 @@ class iHungryBurger{
 		          switch(decision){
 					  case 1:   //Confirm order
 					  addOrderId(orId);
+					  addOrIdAndCusIdRelation(phoneNo);
 					  System.out.println();
 					  quantity[index]=quantity[index]+qty;
+					  addNewStatus();
 					  System.out.println("Your order is entered to the system successfully");
 					   L2:while(true){
 						   int serviceDeci = anotherService();
@@ -90,13 +101,7 @@ class iHungryBurger{
 					       clearConsole();
 					       continue PO;
 					       case 2: 
-					       //check data of the arrays
-					        System.out.println(cusName[0]);
-					        System.out.println(cusId[0]);
-					        System.out.println(quantity[0]);
-					        System.out.println(Arrays.toString(orderId));
-					         System.out.println(Arrays.toString(cusName));                    
-					       //clearConsole();
+					       clearConsole();
 					       mainMenu();
 					       return;
 					       case 3:
@@ -134,9 +139,11 @@ class iHungryBurger{
 		              switch(decision){
 					  case 1:
 					  addOrderId(orId);
+					  addOrIdAndCusIdRelation(phoneNo);
 					  addNewCustomerId(phoneNo);  //Add new customer
 					  addNewQuantity(qty);
 					  addNewCustomerName(name);
+					  addNewStatus();
 					  System.out.println();
 					  
 					  System.out.println("Your order is entered to the system successfully");
@@ -250,6 +257,24 @@ class iHungryBurger{
 		  }
 		  tempArray[tempArray.length-1]=qty;
 		  quantity=tempArray;
+		 }
+	  ///////////////Add qty////////////////
+     public static void addOrIdAndCusIdRelation(int phoneNo){
+		  int[] tempArray = new int[orIdOfCus.length+1];
+		  for (int i = 0; i < orIdOfCus.length; i++){
+			  tempArray[i]=orIdOfCus[i];
+		  }
+		  tempArray[tempArray.length-1]=phoneNo;
+		   orIdOfCus=tempArray;
+		 }
+	  ///////////////Add status////////////////
+     public static void addNewStatus(){
+		  int[] tempArray = new int[status.length+1];
+		  for (int i = 0; i < status.length; i++){
+			  tempArray[i]=status[i];
+		  }
+		  tempArray[tempArray.length-1]=PREPARING;
+		  status=tempArray;
 		 }
      //////////////Confirm order/////////////////
      public static int confirmOrder(){
