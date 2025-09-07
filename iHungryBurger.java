@@ -65,7 +65,7 @@ class iHungryBurger{
 	 System.out.println(Arrays.toString(orIdOfCus));
 	 	 System.out.println(Arrays.toString(status));
 
-     System.out.println("------------------------------------------------------");
+   System.out.println("------------------------------------------------------");
  	 System.out.println("|                    PLACE ORDER                     |");
  	 System.out.println("------------------------------------------------------");
  	 String orId = generateOrderId();
@@ -80,11 +80,10 @@ class iHungryBurger{
  	 System.out.print("Enter Customer ID (phone no.): ");
  	 String phone = input.next();
  	 
- 	 if(validatePhoneNo(phone)){                   //validate phone number
-		        int phoneNo = Integer.parseInt(phone);
-		     
-		        if(isCustomer(phoneNo)){		                         //Search, is customer already added
-				  int index =searchIndex(phoneNo);  //Get a index of customer
+ 	 if(validatePhoneNo(phone)){                         //validate phone number
+		        int phoneNo = Integer.parseInt(phone); 
+		        if(isCustomer(phoneNo)){		             //Search, is customer already added
+				      int index =searchIndex(phoneNo);      //Get a index of customer
 		          System.out.println("Customer Name :"+cusName[index]);
 		          System.out.print("Enter Burger Quantity - :");
 		          int qty = input.nextInt();
@@ -135,7 +134,7 @@ class iHungryBurger{
 		          }else{
 					  
 					  System.out.print("Customer Name :");
-					  String name=input.next();   //Name of the new customer
+					   String name=input.next();   //Name of the new customer
 		              System.out.print("Enter Burger Quantity - :");
 		              int qty = input.nextInt();
 		              double total = qty*UNIT_PRICE;
@@ -368,11 +367,11 @@ class iHungryBurger{
 		     System.out.println("\t(02) Preparing Order");
 		     System.out.println("\t(02) Cancel Order");
 		     System.out.print("Enter your option -");
-			 int op = input.nextInt();
+			  int op = input.nextInt();
 			  switch(op){
 				  case 1:
 				    clearConsole();
-				    System.out.println("------------------------------------------------------");
+				          System.out.println("------------------------------------------------------");
  	                System.out.println("|                 DELIVERED ORDER                    |");
  	                System.out.println("------------------------------------------------------");
  	                System.out.println();
@@ -412,9 +411,9 @@ class iHungryBurger{
 					       }
 					   }
 				  case 2:
-				    clearConsole();
-				    System.out.println("------------------------------------------------------");
- 	                System.out.println("|                PREPARING ORDER                    |");
+				     clearConsole();
+				          System.out.println("------------------------------------------------------");
+ 	                System.out.println("|                PREPARING ORDER                     |");
  	                System.out.println("------------------------------------------------------");
  	                System.out.println();
  	                  for (int i = 0; i < orderId.length; i++){
@@ -453,8 +452,8 @@ class iHungryBurger{
 					       }
 					   }
 				  case 3:
-				   clearConsole();
-				    System.out.println("------------------------------------------------------");
+				     clearConsole();
+			      	    System.out.println("------------------------------------------------------");
  	                System.out.println("|                     CANCEL ORDER                    |");
  	                System.out.println("------------------------------------------------------");
  	                System.out.println();
@@ -661,11 +660,11 @@ class iHungryBurger{
 			}
 		}  
 	  //////////////Another Service2////////////////
-      public static int anotherService2(){
-		Scanner input = new Scanner(System.in);
-		System.out.print("Do you want to update another order details (Y/N) - ");
-		String decision = input.next().toUpperCase();
-		switch(decision){
+    public static int anotherService2(){
+		  Scanner input = new Scanner(System.in);
+		  System.out.print("Do you want to update another order details (Y/N) - ");
+		  String decision = input.next().toUpperCase();
+		  switch(decision){
 			case "Y":
 			return 1;
 			case "N":
