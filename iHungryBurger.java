@@ -36,7 +36,8 @@ class iHungryBurger{
 			 clearConsole();
 			 placeOrder();break;
 			 case 2:
-			 //searchBestCustomer();break;
+			 clearConsole();
+			 searchBestCustomer();break;
 			 case 3:
 			 clearConsole();
 			 searchOrder();break;
@@ -49,11 +50,80 @@ class iHungryBurger{
 			 clearConsole();
 			 updateOrderDetails();break;
 			 case 7:
-			 //exit();break;
+			 exit();break;
 			 default:	 
 	       }
 		}
 		
+    public static void exit(){
+        clearConsole();
+        System.out.println("\n\t\tYou left the program...\n");
+        System.exit(0);
+      }
+    //////////////Search best customer////////
+    public static void searchBestCustomer(){
+     System.out.println("------------------------------------------------------");
+ 	 System.out.println("|                   BEST CUSTOMER                     |");
+ 	 System.out.println("------------------------------------------------------");
+ 	 System.out.println();
+ 	 System.out.println();
+ 	 if(cusId.length==0){
+	 	for (int i = 0; i <quantity.length ; i++){
+	      for (int j = 1; j < quantity.length; j++){
+			  if(quantity[i]<quantity[j]){
+				  int t = quantity[i];
+				  quantity[i]=quantity[j];
+				  quantity[j]=t;
+				  
+				  int tid = cusId[i];
+				  cusId[i]=cusId[j];
+				  cusId[j]=tid;
+				  
+				  String tname = cusName[i];
+				  cusName[i]=cusName[j];
+				  cusName[j]=tname;
+				  System.out.printf("%-12s %-15s %-10s%n", "CustomerID", "Name", "Total");
+                  System.out.println("------------------------------------------------------");
+                  for (int k = 0; k < cusId.length; k++) {
+                    System.out.printf("%-12s %-15s %-10.2f%n","0"+cusId[k],cusName[k],quantity[k] * UNIT_PRICE);
+                    System.out.println("------------------------------------------------------");
+                   }	 	  
+			     }
+		       }
+		     }
+		     L2:while(true){
+						   int serviceDeci = anotherService4();
+					       switch(serviceDeci){
+					       case 1:
+					       clearConsole();
+					       mainMenu();
+					       case 2:    
+					       exit();
+					       return;
+					       case 3:
+					       System.out.println("Invalid input enter valid input");
+					       continue L2;
+					       }
+					   }
+		      }else{
+			  System.out.println("Empty Records");
+			  L2:while(true){
+						   int serviceDeci = anotherService4();
+					       switch(serviceDeci){
+					       case 1:
+					       clearConsole();
+					       mainMenu();
+					       case 2:    
+					       exit();
+					       return;
+					       case 3:
+					       System.out.println("Invalid input enter valid input");
+					       continue L2;
+					       }
+				 }
+			}
+		}
+    
 	//////////////Place Order////////////////
 	public static void placeOrder(){
      Scanner input = new Scanner(System.in); 
@@ -63,9 +133,9 @@ class iHungryBurger{
 	 System.out.println(Arrays.toString(orderId));
 	 System.out.println(Arrays.toString(quantity));
 	 System.out.println(Arrays.toString(orIdOfCus));
-	 	 System.out.println(Arrays.toString(status));
+	 System.out.println(Arrays.toString(status));
 
-   System.out.println("------------------------------------------------------");
+     System.out.println("------------------------------------------------------");
  	 System.out.println("|                    PLACE ORDER                     |");
  	 System.out.println("------------------------------------------------------");
  	 String orId = generateOrderId();
@@ -686,7 +756,21 @@ class iHungryBurger{
 			default :
 			return 3;
 			}
-		} 
+		}
+	 //////////////Another Service4////////////////
+      public static int anotherService4(){
+		Scanner input = new Scanner(System.in);
+		System.out.print("\tDo you want to go to main menu (Y/N) - ");
+		String decision = input.next().toUpperCase();
+		switch(decision){
+			case "Y":
+			return 1;
+			case "N":
+			return 2;
+			default :
+			return 3;
+			}
+		}  
      ///////////////Add order id/////////////////
      public static void addOrderId(String id){
 		  String[] tempArray = new String[orderId.length+1];
