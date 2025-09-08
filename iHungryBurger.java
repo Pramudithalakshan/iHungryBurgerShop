@@ -119,8 +119,10 @@ class iHungryBurger{
 					       case 1:
 					       clearConsole();
 					       searchCustomerDetails();
-					       case 2:    
-					       exit();
+					       case 2:
+					       clearConsole();    
+					       mainMenu();
+					       return;
 					       case 3:
 					       System.out.println("Invalid input enter valid input");
 					       continue L2;
@@ -549,11 +551,10 @@ class iHungryBurger{
 					       switch(serviceDeci){
 					       case 1:
 					       clearConsole();
-					       viewOrders();
+					       mainMenu();
 					       return;
 					       case 2:    
-					       clearConsole();
-					       mainMenu();
+					       exit();
 					       return;
 					       case 3:
 					       System.out.println("Invalid input enter valid input");
@@ -590,11 +591,10 @@ class iHungryBurger{
 					       switch(serviceDeci){
 					       case 1:
 					       clearConsole();
-					       viewOrders();
+					       mainMenu();
 					       return;
 					       case 2:    
-					       clearConsole();
-					       mainMenu();
+					       exit();
 					       return;
 					       case 3:
 					       System.out.println("Invalid input enter valid input");
@@ -631,11 +631,10 @@ class iHungryBurger{
 					       switch(serviceDeci){
 					       case 1:
 					       clearConsole();
-					       viewOrders();
+					       mainMenu();
 					       return;
 					       case 2:    
-					       clearConsole();
-					       mainMenu();
+					       exit();
 					       return;
 					       case 3:
 					       System.out.println("Invalid input enter valid input");
