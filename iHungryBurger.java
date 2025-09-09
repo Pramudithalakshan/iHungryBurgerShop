@@ -541,6 +541,7 @@ class iHungryBurger{
  	         System.out.println("\t[1] Delivered Orders");
 		     System.out.println("\t[2] Prepared Orders");
 		     System.out.println("\t[3] Cancelled Orders");
+			 VO:while (true) {
 		     System.out.print("Enter your option -");
 			  int op = input.nextInt();
 			  switch(op){
@@ -669,8 +670,11 @@ class iHungryBurger{
 					       }
 					   }
 				  default:
+				  System.out.println("Invalid input");
+                  continue VO;
 				  }
 			 }
+		   }
 		 /////////////find customer name///////////
 		 public static int findCustomerDetails(int phone){
 			for(int i = 0;i<cusId.length;i++){
@@ -681,12 +685,12 @@ class iHungryBurger{
 			return -1;
 		 }  
 	    //////////////Update status////////////////
-        public static void updateStatus(int customerId,String orderId,int orIndex){
+        public static void updateStatus(int customerId,String orderid,int orIndex){
 			Scanner input = new Scanner(System.in);
 			System.out.println("Status Update");
 		    System.out.println("===============");
 		    System.out.println();
-			System.out.println("OrderId -"+orderId);
+			System.out.println("OrderId -"+orderid);
 			for (int i = 0; i < cusId.length; i++){
 				 if(cusId[i]==customerId){
 				   System.out.println("CustomerId -"+"0"+cusId[i]);
@@ -695,6 +699,7 @@ class iHungryBurger{
 		    
 			}
 			System.out.println();
+			UO:while(true){
 			System.out.println("\t(0)Cancel");
 			System.out.println("\t(1)Preparing");
 			System.out.println("\t(2)Delivered\n");
@@ -702,11 +707,15 @@ class iHungryBurger{
 			int value = input.nextInt();
 			if(value==0){
 				status[orIndex]=2;
-				//quantity[i]=quantity[i]-orderQty[orIndex];  //remove quantity if order cancelled
+				int customerIdIndex = findIndexCusId(customerId);
+				quantity[customerIdIndex]=quantity[customerIdIndex]-orderQty[orIndex];  //remove quantity if order cancelled
 				}else if(value==1){
 					status[orIndex]=0;
-					}else{
+					}else if(value==2){
 						status[orIndex]=1;
+						}else{
+							System.out.println("Invalid input");
+							continue UO;
 						}
 			System.out.println();
 			System.out.println("\tUpdate order status success fully...\n");
@@ -729,6 +738,7 @@ class iHungryBurger{
 					       continue L2;
 					       }
 					   }
+					}
 		        }
 			
 		    
