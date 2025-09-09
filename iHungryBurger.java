@@ -88,6 +88,7 @@ class iHungryBurger{
 					       case 1:
 					       clearConsole();
 					       searchCustomerDetails();
+					       return;
 					       case 2:    
 					       exit();
 					       return;
@@ -97,10 +98,16 @@ class iHungryBurger{
 					       }
 			        }
 		     }else{
-			   int phone = Integer.parseInt(p); 
+				 int index = -1;
+				int phone = Integer.parseInt(p); 
+				for (int i = 0; i < cusId.length; i++){
+					if(cusId[i]==phone){
+						index=i;
+						}
+				}
 	           System.out.println("CustomerID - "+"0"+phone);
  	           int phoneNumIndex = findIndexCusId(phone);
-               System.out.println("CustomerID - "+cusName[phoneNumIndex]);
+               System.out.println("CustomerName - "+cusName[index]);
                System.out.println();
                System.out.println("Customer Order Details");
                System.out.println("======================");
@@ -119,6 +126,7 @@ class iHungryBurger{
 					       case 1:
 					       clearConsole();
 					       searchCustomerDetails();
+					       return;
 					       case 2:
 					       clearConsole();    
 					       mainMenu();
@@ -137,6 +145,7 @@ class iHungryBurger{
 					       case 1:
 					       clearConsole();
 					       searchCustomerDetails();
+					       return;
 					       case 2:    
 					       exit();
 					       case 3:
@@ -155,7 +164,7 @@ class iHungryBurger{
  	 System.out.println();
  	 if(cusId.length>0){
 	 	   for (int i = 0; i < quantity.length - 1; i++) {
-            for (int j = 0; j < quantity.length - i - 1; j++) {
+            for (int j = 0; j < quantity.length- 1; j++) {
                 if (quantity[j] < quantity[j + 1]) {
                     int tempQ = quantity[j];
                     quantity[j] = quantity[j + 1];
@@ -185,6 +194,7 @@ class iHungryBurger{
 					       case 1:
 					       clearConsole();
 					       mainMenu();
+					       return;
 					       case 2:    
 					       exit();
 					       break; 
@@ -201,9 +211,9 @@ class iHungryBurger{
 					       case 1:
 					       clearConsole();
 					       mainMenu();
+					       return;
 					       case 2:    
 					       exit();
-					       return;
 					       case 3:
 					       System.out.println("Invalid input enter valid input");
 					       continue L2;
@@ -230,10 +240,9 @@ class iHungryBurger{
  	 L1:while(true){
  	 System.out.print("Enter Customer ID (phone no.): ");
  	 String phone = input.next();
- 	 
  	 if(validatePhoneNo(phone)){                         //validate phone number
-		        int phoneNo = Integer.parseInt(phone); 
-		        if(isCustomer(phoneNo)){		             //Search, is customer already added
+		       int phoneNo = Integer.parseInt(phone); 
+		       if(isCustomer(phoneNo)){		             //Search, is customer already added
 				  int index =searchIndex(phoneNo);      //Get a index of customer
 		          System.out.println("Customer Name :"+cusName[index]);
 		          System.out.print("Enter Burger Quantity - :");
@@ -285,7 +294,7 @@ class iHungryBurger{
 		          }else{
 					  
 					  System.out.print("Customer Name :");
-					   String name=input.next();   //Name of the new customer
+					  String name=input.next();   //Name of the new customer
 		              System.out.print("Enter Burger Quantity - :");
 		              int qty = input.nextInt();
 		              double total = qty*UNIT_PRICE;
@@ -348,7 +357,7 @@ class iHungryBurger{
 	 }
  } 
  
-      public static void searchOrder(){
+     public static void searchOrder(){
 	   Scanner input = new Scanner(System.in); 
 	   SO:while(true){
 	   System.out.println("------------------------------------------------------");
@@ -371,10 +380,10 @@ class iHungryBurger{
                   System.out.printf("%s %-10s %-12s %-15s %-10s %-12s %-12s %s%n",
                   "|",
                   orderid,
-                  "0" + cusId[i],
+                  "0"+cusId[i], 
                   cusName[i],
                   orderQty[orIndex],
-                  UNIT_PRICE,
+                  orderQty[orIndex]*UNIT_PRICE,
                   status[orIndex] == 0 ? "Preparing" : status[orIndex] == 1 ? "Delivered" : "Canceled",
                   "|"
                   );
@@ -398,9 +407,24 @@ class iHungryBurger{
 					       }
 					   }
 		   }else{
-			   System.out.println("Invlaid Order Order");
-			   continue SO;
-		   } 
+			   clearConsole();
+			   System.out.println("Invlaid  Order id");
+		     	   L2:while(true){
+						   int serviceDeci = anotherService1();
+					       switch(serviceDeci){
+					       case 1:
+					       clearConsole();
+					       continue SO;
+					       case 2:    
+					       clearConsole();
+					       mainMenu();
+					       return;
+					       case 3:
+					       System.out.println("Invalid input enter valid input");
+					       continue L2;
+					       }
+					   }
+		        } 
 		   } 
 	  }
 	  
@@ -425,12 +449,11 @@ class iHungryBurger{
 					           System.out.println("Name       -"+cusName[i]);
 					           System.out.println("Quantity   -"+orderQty[orIndex]);
 					           System.out.println("OrderValue -"+orderQty[orIndex]*UNIT_PRICE);
-					           System.out.println(status[orIndex]==0?"OrderStatus - Preparing"
-					           :status[orIndex]==1?"OrderStatus - Delivered":"OrderStatus - Canceled");
+					           System.out.println("OrderStatus - Preparing");
 					           System.out.println();
 					           System.out.println("What do you want to update?\n");
-					           System.out.println("\t(01) Quantity");
-					           System.out.println("\t(02) Status");
+					           System.out.println("\t(1) Quantity");
+					           System.out.println("\t(2) Status");
 					           System.out.println();
 					           L2:while(true){
 					           System.out.print("Enter your option -");
@@ -469,7 +492,7 @@ class iHungryBurger{
 					       }
 					      }
 						 }else{
-							 System.out.print("his order is already cancelled..You can not update this order...");
+							 System.out.print("This order is already cancelled..You can not update this order...");
 							  L2:while(true){
 						       int serviceDeci = anotherService2();
 					            switch(serviceDeci){
@@ -515,20 +538,22 @@ class iHungryBurger{
  	         System.out.println("|                 VIEW ORDER LIST                    |");
  	         System.out.println("------------------------------------------------------");
  	         System.out.println();
- 	         System.out.println("\t(01) Delivered Order");
-		     System.out.println("\t(02) Preparing Order");
-		     System.out.println("\t(02) Cancel Order");
+ 	         System.out.println("\t[1] Delivered Orders");
+		     System.out.println("\t[2] Prepared Orders");
+		     System.out.println("\t[3] Cancelled Orders");
 		     System.out.print("Enter your option -");
 			  int op = input.nextInt();
 			  switch(op){
 				  case 1:
 				    clearConsole();
-				          System.out.println("------------------------------------------------------");
+				    System.out.println("------------------------------------------------------");
  	                System.out.println("|                 DELIVERED ORDER                    |");
  	                System.out.println("------------------------------------------------------");
  	                System.out.println();
- 	                for (int i = 0; i < orderId.length; i++){
+					
+ 	                for (int i = 0; i < orIdOfCus.length; i++){
  	                if(status[i]==1){			
+					int index =  findCustomerDetails(orIdOfCus[i]);
  	                 System.out.println("-------------------------------------------------------------------");
                      System.out.printf("%s %-10s %-12s %-15s %-10s %-12s %s%n",
                      "|","OrderID", "CustomerId", "Name", "Quantity", "OrderValue","|");
@@ -537,8 +562,8 @@ class iHungryBurger{
                      System.out.printf("%s %-10s %-12s %-15s %-10s %-12s %s%n",
                      "|",
                      orderId[i],
-                     "0" + cusId[i],
-                     cusName[i],
+                     "0" + cusId[index],
+                     cusName[index],
                      orderQty[i],
                      orderQty[i]*UNIT_PRICE,
                      "|"
@@ -563,12 +588,13 @@ class iHungryBurger{
 					   }
 				  case 2:
 				     clearConsole();
-				          System.out.println("------------------------------------------------------");
+				     System.out.println("------------------------------------------------------");
  	                System.out.println("|                PREPARING ORDER                     |");
  	                System.out.println("------------------------------------------------------");
  	                System.out.println();
- 	                  for (int i = 0; i < orderId.length; i++){
- 	                if(status[i]==0){			
+ 	              for (int i = 0; i < orderId.length; i++){
+ 	                if(status[i]==0){
+					 int index =  findCustomerDetails(orIdOfCus[i]);			
  	                 System.out.println("-------------------------------------------------------------------");
                      System.out.printf("%s %-10s %-12s %-15s %-10s %-12s %s%n",
                      "|","OrderID", "CustomerId", "Name", "Quantity", "OrderValue","|");
@@ -577,8 +603,8 @@ class iHungryBurger{
                      System.out.printf("%s %-10s %-12s %-15s %-10s %-12s %s%n",
                      "|",
                      orderId[i],
-                     "0" + cusId[i],
-                     cusName[i],
+                     "0" + cusId[index],
+                     cusName[index],
                      orderQty[i],
                      orderQty[i]*UNIT_PRICE,
                      "|"
@@ -602,13 +628,14 @@ class iHungryBurger{
 					       }
 					   }
 				  case 3:
-				     clearConsole();
-			      	    System.out.println("------------------------------------------------------");
+				    clearConsole();
+			      	System.out.println("------------------------------------------------------");
  	                System.out.println("|                     CANCEL ORDER                    |");
  	                System.out.println("------------------------------------------------------");
  	                System.out.println();
- 	                  for (int i = 0; i < orderId.length; i++){
- 	                if(status[i]==2){			
+ 	               for (int i = 0; i < orderId.length; i++){
+ 	                if(status[i]==2){
+					 int index =  findCustomerDetails(orIdOfCus[i]);				
  	                 System.out.println("-------------------------------------------------------------------");
                      System.out.printf("%s %-10s %-12s %-15s %-10s %-12s %s%n",
                      "|","OrderID", "CustomerId", "Name", "Quantity", "OrderValue","|");
@@ -617,8 +644,8 @@ class iHungryBurger{
                      System.out.printf("%s %-10s %-12s %-15s %-10s %-12s %s%n",
                      "|",
                      orderId[i],
-                     "0" + cusId[i],
-                     cusName[i],
+                     "0" + cusId[index],
+                     cusName[index],
                      orderQty[i],
                      orderQty[i]*UNIT_PRICE,
                      "|"
@@ -644,7 +671,15 @@ class iHungryBurger{
 				  default:
 				  }
 			 }
-		   
+		 /////////////find customer name///////////
+		 public static int findCustomerDetails(int phone){
+			for(int i = 0;i<cusId.length;i++){
+               if(cusId[i]==phone){
+                  return i;
+			   }
+			}
+			return -1;
+		 }  
 	    //////////////Update status////////////////
         public static void updateStatus(int customerId,String orderId,int orIndex){
 			Scanner input = new Scanner(System.in);
@@ -667,14 +702,14 @@ class iHungryBurger{
 			int value = input.nextInt();
 			if(value==0){
 				status[orIndex]=2;
-				quantity[orIndex]=quantity[orIndex]-orderQty[orIndex];  //remove quantity if order cancelled
+				//quantity[i]=quantity[i]-orderQty[orIndex];  //remove quantity if order cancelled
 				}else if(value==1){
 					status[orIndex]=0;
 					}else{
 						status[orIndex]=1;
 						}
 			System.out.println();
-			System.out.println("\tUpdate order quantity success fully...\n");
+			System.out.println("\tUpdate order status success fully...\n");
 			System.out.println(status[orIndex]==0?"OrderStatus - Preparing"
 	        :status[orIndex]==1?"OrderStatus - Delivered":"OrderStatus - Canceled");
 			System.out.println();
@@ -684,6 +719,7 @@ class iHungryBurger{
 					       case 1:
 					       clearConsole();
 					       updateOrderDetails();
+					       return;
 					       case 2:    
 					       clearConsole();
 					       mainMenu();
@@ -718,6 +754,7 @@ class iHungryBurger{
 			System.out.println("\tUpdate order quantity success fully...");
 			System.out.println("New order quantity - "+orderQty[orIndex]);
 			System.out.println("New order value - "+orderQty[orIndex]*UNIT_PRICE);
+			//quantity[index]=quantity[index];
 			System.out.println();
 			L2:while(true){
 						   int serviceDeci = anotherService2();
@@ -725,6 +762,7 @@ class iHungryBurger{
 					       case 1:
 					       clearConsole();
 					       updateOrderDetails();
+					       return;
 					       case 2:    
 					       clearConsole();
 					       mainMenu();
@@ -736,9 +774,9 @@ class iHungryBurger{
 					   }
 		}
 	   //////////////Find cusid of order////////////////
-        public static int findOrIdOfCus(int id){
+        public static int findOrIdOfCus(int index){
 			for (int i = 0; i < orIdOfCus.length; i++){
-				if(i==id){
+				if(i==index){
 					return orIdOfCus[i];
 					}
 			}
@@ -755,7 +793,7 @@ class iHungryBurger{
 			}
         //////////////validate order id////////////////
         public static boolean isValidateOrId(String id){
-			for (int i = 0; i < orderId.length; i++){
+			for (int i = 0; i <orderId.length; i++){
 				if(orderId[i].equals(id)){
 					return true;
 					}
@@ -902,7 +940,7 @@ class iHungryBurger{
 		  tempArray[tempArray.length-1]=qty;
 		  quantity=tempArray;
 		 }
-	  ///////////////Add qty////////////////
+	  ///////////////Add  customer and order id relation////////////////
      public static void addOrIdAndCusIdRelation(int phoneNo){
 		  int[] tempArray = new int[orIdOfCus.length+1];
 		  for (int i = 0; i < orIdOfCus.length; i++){
@@ -952,7 +990,7 @@ class iHungryBurger{
 		return String.format("B%04d",Integer.parseInt(ls)+1);
 	}
 	
-	//////////////Validate Phone Number////////////////	
+	//////////////Validate Phone Number//////////////// //076
     public static boolean validatePhoneNo(String phoneNo){
 		 int ch = phoneNo.charAt(0); 	 
 		 return ch!=48||phoneNo.length()!=10?false:true;
